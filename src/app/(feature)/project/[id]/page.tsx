@@ -131,7 +131,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                                                 <Share2 className="w-4 h-4 mr-2" />
                                                 Share
                                             </Button>
-                                            <Button variant="outline" className="flex-1 ml-2">
+                                            <Button className="flex-1 ml-2">
                                                 <BookmarkPlus className="w-4 h-4 mr-2" />
                                                 Save
                                             </Button>
@@ -141,8 +141,8 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                                             <div>
                                                 <h3 className="text-sm font-medium text-gray-500">Categories</h3>
                                                 <div className="flex flex-wrap gap-2 mt-2">
-                                                    <Badge variant="outline">{metadata.category}</Badge>
-                                                    <Badge variant="outline">{metadata.stream}</Badge>
+                                                    <Badge >{metadata.category}</Badge>
+                                                    <Badge >{metadata.stream}</Badge>
                                                 </div>
                                             </div>
 
@@ -150,7 +150,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                                                 <h3 className="text-sm font-medium text-gray-500">Tags</h3>
                                                 <div className="flex flex-wrap gap-2 mt-2">
                                                     {metadata.tags?.map((tag, index) => (
-                                                        <Badge key={index} variant="outline">
+                                                        <Badge key={index} >
                                                             {tag}
                                                         </Badge>
                                                     ))}
@@ -158,8 +158,8 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                                             </div>
 
                                             {metadata.projectPdfUrl && (
-                                                <Button className="w-full" variant="secondary">
-                                                    Visit Project
+                                                <Button className="w-full">
+                                                    Download Project PDF
                                                 </Button>
                                             )}
                                         </div>
