@@ -1,6 +1,8 @@
+import { IUserProps } from "../user/Iuser.type";
+
 export interface IProjectCardProps {
     id: string;
-    userId: string;
+    userId: IUserProps;
     authorName: string;
     college: string;
     title: string;

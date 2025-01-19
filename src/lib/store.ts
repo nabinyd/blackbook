@@ -6,11 +6,13 @@ import { combineReducers } from "redux";
 import { authSlice } from "./features/auth.slice";
 import { projectReducer } from "./features/project.slice";
 import storage from "./storage";
+import createProjectReducer from "./features/create.project.slice";
 
 
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
     project: projectReducer,
+    createProject: createProjectReducer,
     // Add other reducers here as needed
 });
 

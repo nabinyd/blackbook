@@ -70,6 +70,10 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			animation: {
+				bounce200: 'bounce 1s 200ms infinite',
+				bounce400: 'bounce 1s 400ms infinite',
 			}
 
 		}
