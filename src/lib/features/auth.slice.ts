@@ -8,37 +8,57 @@ interface AuthState {
     user: IUserProps | null;
     isAuthenticated: boolean;
     loading?: boolean;
-    error?: string;
+    error?: string | null;
+    isInitialized: boolean;
 }
 
 const initialState: AuthState = {
     user: null,
     isAuthenticated: false,
     loading: false,
-    error: '',
+    error: null,
+    isInitialized: false,
 };
+
+axios.defaults.withCredentials = true;
+
+const verifyAuth = createAsyncThunk('auth/verifyAuth', async () => {
+    const url = `${BASE_URL}/auth/verify`;
+    const response = await axios.get(url, { withCredentials: true });
+    if (response.status === 200) {
+        return response.data;
+    }
+    throw new Error('Failed to verify auth');
+});
 
 
 const handleGoogleLogin = createAsyncThunk('auth/handleGoogleLogin', async () => {
     const url = `${BASE_URL}/auth/login?role=user`;
-    console.log("url", url);
     const { data } = await axios.get(url);
     if (data) {
         window.location.href = data.googleAuthUrl;
     }
 });
 
-
-const fetchUserFromSession = createAsyncThunk('auth/fetchUserFromSession', async () => {
-    // Fetch the session token from the cookies
-    const sessionToken = Cookies.get('session_token');
-    console.log("sessionToken", sessionToken);
-    if (sessionToken) {
-        const { data } = await axios.post('http://localhost:3000/auth/verify-session', { sessionToken });
-        return data.user; // Assuming the API returns the user object
+const handleLogout = createAsyncThunk(
+    'auth/handleLogout',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/auth/logout`, {
+                withCredentials: true,
+            });
+            if (response.status === 200) {
+                return response.data;
+            }
+            return rejectWithValue('Logout failed');
+        } catch (error) {
+            console.log('error', error);
+            return rejectWithValue('Failed to logout');
+        }
     }
-    return null;
-});
+);
+
+
 
 
 const authSlice = createSlice({
@@ -58,9 +78,14 @@ const authSlice = createSlice({
         logout: (state) => {
             state.user = null;
             state.isAuthenticated = false;
+            state.error = null;
+            state.loading = false;
         },
+        clearError: (state) => {
+            state.error = null;
+        }
     },
-extraReducers: (builder) => {
+    extraReducers: (builder) => {
         builder.addCase(handleGoogleLogin.pending, (state) => {
             state.loading = true;
         });
@@ -72,20 +97,45 @@ extraReducers: (builder) => {
             state.error = 'Failed to login';
         });
 
-        builder.addCase(fetchUserFromSession.pending, (state) => {
+
+        builder.addCase(handleLogout.pending, (state) => {
             state.loading = true;
+            state.error = null;
         });
-        builder.addCase(fetchUserFromSession.fulfilled, (state, action) => {
+        builder.addCase(handleLogout.fulfilled, (state) => {
+            state.loading = false;
+            state.user = null;
+            state.isAuthenticated = false;
+            state.error = null;
+            Cookies.remove('access_token');
+        });
+        builder.addCase(handleLogout.rejected, (state) => {
+            state.loading = false;
+            state.error = 'Failed to logout';
+        });
+
+        builder.addCase(verifyAuth.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(verifyAuth.fulfilled, (state, action: PayloadAction<IUserProps>) => {
             state.loading = false;
             state.user = action.payload;
-            state.isAuthenticated = !!action.payload;
+            state.isAuthenticated = true;
+            state.error = null;
         });
-        builder.addCase(fetchUserFromSession.rejected, (state) => {
+
+        builder.addCase(verifyAuth.rejected, (state) => {
             state.loading = false;
-            state.error = 'Failed to fetch user';
+            state.error = 'Failed to verify auth';
+            state.user = null;
+            state.isAuthenticated = false;
+            Cookies.remove('acess_token');
+            state.isInitialized = true;
         });
+
     }
 });
-export const { setUser, setLoading, setError, logout,  } = authSlice.actions;
+export const { setUser, setLoading, setError, logout, clearError } = authSlice.actions;
 
-export { authSlice, handleGoogleLogin , fetchUserFromSession};
+export { authSlice, handleGoogleLogin, handleLogout, verifyAuth };

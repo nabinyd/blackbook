@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Routes } from "@/config/Routes";
+import { AppDispatch, RootState } from "@/lib/store";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLogout } from "@/lib/features/auth.slice";
 
 const links = [
     { href: "/project", label: "Project" },
@@ -14,10 +17,21 @@ const links = [
 ];
 
 export default function Navbar() {
+    const dispatch = useDispatch<AppDispatch>();
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const handleLogoutAction = async () => {
+        try {
+            dispatch(handleLogout());
+            // dispatch(logout());
+        } catch (error) {
+            console.error("Failed to logout:", error);
+        }
     };
 
     return (
@@ -25,7 +39,7 @@ export default function Navbar() {
             {/* Logo */}
             <div className="flex justify-between items-center w-full">
                 <Link href={Routes.HOME}>
-                    <Image src="/logo/svgexport-62.svg" alt="logo" width={100} height={50}/>
+                    <Image src="/logo/svgexport-62.svg" alt="logo" width={100} height={50} />
                 </Link>
             </div>
 
@@ -67,12 +81,26 @@ export default function Navbar() {
 
             {/* Desktop Buttons */}
             <div className="hidden md:flex items-center space-x-4">
-                <Link href={Routes.LOGIN}>
-                    <Button className="bg-blue-800 hover:bg-blue-600">Log in</Button>
-                </Link>
-                <Link href={Routes.SIGNUP}>
-                    <Button className="bg-yellow-500 hover:bg-yellow-400">Sign Up</Button>
-                </Link>
+                {isAuthenticated ? (
+                    <div className="flex items-center space-x-4">
+                        <Link href={Routes.DASHBOARD}>
+                            <Button>Dashboard</Button>
+                        </Link>
+
+
+                        <Button onClick={handleLogoutAction}>Log out</Button>
+                    </div>
+
+                ) : (
+                    <div className="flex items-center space-x-4">
+                        <Link href={Routes.LOGIN}>
+                            <Button>Log in</Button>
+                        </Link>
+                        <Link href={Routes.SIGNUP}>
+                            <Button>Sign up</Button>
+                        </Link>
+                    </div>
+                )}
             </div>
 
             {/* Mobile Menu */}
@@ -92,12 +120,25 @@ export default function Navbar() {
                         ))}
                     </ul>
                     <div className="mt-6">
-                        <Link href={Routes.LOGIN}>
-                            <Button className="bg-blue-800 w-full py-3">Log in</Button>
-                        </Link>
-                        <Link href={Routes.SIGNUP}>
-                            <Button className="bg-yellow-500 w-full py-3">Sign Up</Button>
-                        </Link>
+                        {isAuthenticated ? (
+                            <div>
+                                <Link href={Routes.DASHBOARD}>
+                                    <Button className="bg-blue-800 hover:bg-blue-600 w-full">Dashboard</Button>
+                                </Link>
+                                <Link href={Routes.LOGOUT}>
+                                    <Button className="bg-red-800 hover:bg-red-600 w-full">Log out</Button>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div>
+                                <Link href={Routes.LOGIN}>
+                                    <Button className="bg-blue-800 hover:bg-blue-600 w-full">Log in</Button>
+                                </Link>
+                                <Link href={Routes.SIGNUP}>
+                                    <Button className="bg-green-800 hover:bg-green-600 w-full">Sign up</Button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

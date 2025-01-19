@@ -1,7 +1,7 @@
-import { ProjectStatusRole } from '@/shared/enum/Role';
+import { ProjectStatusRole } from "@/shared/enum/Role";
 
-export interface CreateProjectDto {
-    userId: string;
+export interface IProjectResponseProps {
+    id: string;
     metadata: {
         authorName: string;
         email: string;
@@ -20,9 +20,10 @@ export interface CreateProjectDto {
         projectPdfUrl: string;
         blackbookPdfUrl: string;
         viewCount: number;
-        projectUrl: string;
         collaborators: string[];
         upVotes: number;
         downVotes: number;
+        createdAt: Date;
+        updatedAt: Date;
     };
 }

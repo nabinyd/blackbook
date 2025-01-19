@@ -1,4 +1,5 @@
-import React from "react";
+import { Routes } from "@/config/Routes";
+import Link from "next/link";
 
 export default function CTA() {
     return (
@@ -16,24 +17,24 @@ export default function CTA() {
 
                 {/* CTA Button */}
                 <div className="flex justify-center">
-                    <a
-                        href="#create-project"
+                    <Link
+                        href={Routes.PROJECT_CREATE}
                         className="bg-yellow-500 hover:bg-yellow-600 text-white text-lg py-3 px-8 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:scale-105"
                     >
                         Create Your Project Now
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Secondary CTA */}
                 <div className="mt-12 text-lg">
                     <p>Not ready to create a project yet? No worries!</p>
                     <p>
-                        <a
-                            href="#learn-more"
+                        <Link
+                            href={Routes.ABOUT}
                             className="text-yellow-300 hover:text-yellow-400 font-semibold"
                         >
                             Learn more about Blackbook.
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>

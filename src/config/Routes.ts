@@ -3,7 +3,8 @@ export const Routes = {
     // Auth Routes
     LOGIN: '/auth/login',
     SIGNUP: '/auth/sign-up',
-    DASHBOARD: '/dashboard',
+    LOGOUT: '/',
+    DASHBOARD: '/user/dashboard',
     PROFILE: '/profile',
     SETTINGS: '/settings',
 
@@ -15,10 +16,11 @@ export const Routes = {
     FORGOT_PASSWORD: '/auth/forgot-password',
     VERIFY_EMAIL: '/auth/verify-email',
     VERIFY_PHONE: '/auth/verify-phone',
+    AUTH_SUCCESS: '/auth/success',
 
     // Project Routes
     PROJECT: '/project',
-    PROJECT_DESCRIPTION: '/projects/:id',
-    PROJECT_CREATE: '/projects/create',
+    PROJECT_DESCRIPTION: (id: string) => `/project/${id}`,
+    PROJECT_CREATE: '/project/create',
 
 }

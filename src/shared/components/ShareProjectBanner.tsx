@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { Routes } from "@/config/Routes";
+import Link from "next/link";
 import React from "react";
 
 export default function ShareProjectBanner() {
@@ -12,9 +14,11 @@ export default function ShareProjectBanner() {
                     Share your project with us and let the world know about your innovation.
                 </p>
                 <div className="flex justify-center gap-6">
-                    <Button className="bg-white text-blue-600 font-semibold py-6 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300">
-                        Create Project
-                    </Button>
+                    <Link href={Routes.PROJECT_CREATE}>
+                        <Button className="bg-white text-blue-600 font-semibold py-6 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300">
+                            Create Project
+                        </Button>
+                    </Link>
                     <Button className="bg-transparent border font-semibold py-6 px-8 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">
                         Learn More
                     </Button>
