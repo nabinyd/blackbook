@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from '@/lib/store';
 import { verifyAuth } from '@/lib/features/auth.slice';
 import Loading from '@/app/Loading';
 
-const publicRoutes = [Routes.LOGIN, Routes.SIGNUP, Routes.AUTH_SUCCESS];
+const privateRoutes = [Routes.DASHBOARD, Routes.PROJECT_CREATE, Routes.PROFILE];
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -21,12 +21,17 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
     useEffect(() => {
         if (isInitialized) {
-            const isPublicRoute = publicRoutes.includes(pathname);
+            const isPrivateRoute = privateRoutes.includes(pathname);
 
-            if (!isAuthenticated && !isPublicRoute) {
-                router.push(Routes.PROJECT);
-            } else if (isAuthenticated && isPublicRoute) {
-                router.push(Routes.DASHBOARD);
+            if (isPrivateRoute) {
+                
+                if (!isAuthenticated) {
+                    router.push(Routes.PROJECT); 
+                }
+            } else {
+                if (isAuthenticated) {
+                    router.push(Routes.DASHBOARD);
+                }
             }
         }
     }, [isAuthenticated, isInitialized, router, pathname]);
