@@ -4,7 +4,6 @@ import ShareProjectBanner from "@/shared/components/ShareProjectBanner";
 import LatestProject from "./(feature)/project/_component/LatestProject";
 import FAQ from "@/shared/components/Faqs";
 import CTA from "@/shared/components/CallToAction";
-import PartnersAndCollaboration from "@/shared/components/PartnersAndCollaboration";
 
 export default function Home() {
   return (

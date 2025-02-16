@@ -30,8 +30,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
     const [comment, setComment] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { description, descriptionLoading, descriptionError, isFavourite, favoriteCheckLoading,
-        favoriteCheckError, userFavoriteProjectsLoading } = useSelector(
+    const { description, descriptionLoading, descriptionError, isFavourite, userFavoriteProjectsLoading } = useSelector(
             (state: RootState) => state.project
         );
 
@@ -74,6 +73,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                 description: "project pdf not available",
             });
         } catch (error) {
+            console.log('error', error);
             toast({
                 title: "Error",
                 description: "Failed to download project pdf",
@@ -102,6 +102,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                 description: "Project URL copied to clipboard",
             });
         } catch (error) {
+            console.log('error', error);
             toast({
                 title: "Error",
                 description: "Failed to copy project URL to clipboard",
@@ -147,6 +148,8 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                     : "Project added to favourites",
             });
         } catch (error) {
+
+            console.log('error', error);
             toast({
                 title: "Error",
                 description: "Failed to update favourite status",
@@ -194,6 +197,7 @@ export default function ProjectDescription({ params: paramsPromise }: { params: 
                 description: "Feedback submitted successfully",
             });
         } catch (error) {
+            console.log('error', error);
             toast({
                 title: "Error",
                 description: "Failed to submit feedback",

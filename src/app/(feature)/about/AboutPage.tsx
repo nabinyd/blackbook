@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, Star, Users, Lightbulb, BookOpen, Link as LinkIcon } from "lucide-react";
+import { ArrowRight, Star, Users, Lightbulb, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { Routes } from "@/config/Routes";
 

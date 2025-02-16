@@ -2,19 +2,19 @@
 import { createProject } from '@/lib/features/create.project.slice';
 import { AppDispatch, RootState } from '@/lib/store';
 import { CreateProjectDto, initialCreateProjectDto } from '@/lib/type/project/ICreateProject.types';
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, X } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { FormField } from './FormField';
 import { FileUpload, PdfUpload } from './FileUpload';
 import { Button } from '@/components/ui/button';
 import { IDatastoreResponseProps } from '@/lib/type/datastore/Idatastore.props';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TagSelector from './selectedTag';
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextEditor from './TextEditor';
 
@@ -50,7 +50,7 @@ export default function CreateProject() {
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
-        const categoryList = datastores[0].categoryList as { [key: string]: any };
+        const categoryList = datastores[0].categoryList as { [key: string]: string[] };
         const streamOptions = Object.values(categoryList[category]);
         setStreamOptions(streamOptions as string[]);
 
@@ -233,6 +233,7 @@ export default function CreateProject() {
             setProjectPdf([]);
 
         } catch (error) {
+            console.log("Error creating project", error);
             toast({
                 title: "Error",
                 description: "Failed to create project",

@@ -46,7 +46,6 @@ export const createFeedback = createAsyncThunk<IProjectFeedbackResponseProps, IC
 export const fetchFeedbackByProjectId = createAsyncThunk("feedback/fetchByProjectId", async (projectId: string, { rejectWithValue }) => {
     try {
 
-        const url = `${BASE_URL}/api/v1/feedback/project/${projectId}`;
         const response = await axios.get(`${BASE_URL}/api/v1/feedback/project/${projectId}`);
         return response.data as IProjectFeedbackResponseProps[];
     } catch (error) {

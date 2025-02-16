@@ -2,15 +2,12 @@
 import { useCallback } from "react";
 import { Routes } from "@/config/Routes";
 import Link from "next/link";
-import { useState } from "react";
 import { AppDispatch } from "@/lib/store";
 import { useDispatch } from "react-redux";
 import { handleGoogleLogin } from "@/lib/features/auth.slice";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -74,7 +71,7 @@ export default function LoginPage() {
                             <Link href={Routes.RESET_PASSWORD} className='text-sm text-blue-300'>Reset password</Link>
                         </div> */}
                         <p className='text-sm text-gray-500'>
-                            Don't have an account? <Link href={Routes.SIGNUP} className='text-blue-300'>Sign up</Link>
+                            Don&apos;t have an account? <Link href={Routes.SIGNUP} className='text-blue-300'>Sign up</Link>
                         </p>
                     </div>
                 </form>

@@ -53,6 +53,7 @@ export const handleLogout = createAsyncThunk(
             }
             return rejectWithValue('Logout failed');
         } catch (error) {
+            console.log('error', error);
             return rejectWithValue('Failed to logout');
         }
     }

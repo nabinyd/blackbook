@@ -17,9 +17,7 @@ import {
     Instagram,
     Linkedin,
     Globe,
-    MapPin,
     User,
-    Briefcase,
     AtSign
 } from 'lucide-react';
 import { Routes } from '@/config/Routes';

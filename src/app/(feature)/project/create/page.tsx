@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '@/lib/store';
 import { getDatastore } from '@/lib/features/datastore.slice';
 import { useToast } from '@/hooks/use-toast';
 import CreateProject from './_component/CreateProject';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Routes } from '@/config/Routes';
