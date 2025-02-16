@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "@/lib/features/auth.slice";
 
 const links = [
+    { href: "/", label: "Home" },
     { href: "/project", label: "Project" },
-    { href: "/final-year-project", label: "FinalyearProject" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
 ];
@@ -83,11 +83,12 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-4">
                 {isAuthenticated ? (
                     <div className="flex items-center space-x-4">
+                        <Link href={Routes.PROJECT_CREATE}>
+                            <Button className="bg-gray-200 text-blue-900">Create +</Button>
+                        </Link>
                         <Link href={Routes.DASHBOARD}>
                             <Button>Dashboard</Button>
                         </Link>
-
-
                         <Button onClick={handleLogoutAction}>Log out</Button>
                     </div>
 
@@ -122,12 +123,13 @@ export default function Navbar() {
                     <div className="mt-6">
                         {isAuthenticated ? (
                             <div>
+                                <Link href={Routes.PROJECT_CREATE}>
+                                    <Button className="bg-blue-800 hover:bg-blue-600 w-full">Create</Button>
+                                </Link>
                                 <Link href={Routes.DASHBOARD}>
                                     <Button className="bg-blue-800 hover:bg-blue-600 w-full">Dashboard</Button>
                                 </Link>
-                                <Link href={Routes.LOGOUT}>
-                                    <Button className="bg-red-800 hover:bg-red-600 w-full">Log out</Button>
-                                </Link>
+                                <Button onClick={handleLogoutAction} className="bg-red-800 hover:bg-red-600 w-full">Log out</Button>
                             </div>
                         ) : (
                             <div>

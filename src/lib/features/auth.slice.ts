@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUserProps } from '../type/user/Iuser.type';
-import { BASE_URL } from '@/constant/constant';
+import { BASE_API_URL, BASE_URL } from '@/constant/constant';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Metadata, SocialMedia } from '@/app/(feature)/user/update/_type/profile.types';
 
 interface AuthState {
     user: IUserProps | null;
@@ -22,7 +23,7 @@ const initialState: AuthState = {
 
 axios.defaults.withCredentials = true;
 
-const verifyAuth = createAsyncThunk('auth/verifyAuth', async () => {
+export const verifyAuth = createAsyncThunk('auth/verifyAuth', async () => {
     const url = `${BASE_URL}/auth/verify`;
     const response = await axios.get(url, { withCredentials: true });
     if (response.status === 200) {
@@ -32,7 +33,7 @@ const verifyAuth = createAsyncThunk('auth/verifyAuth', async () => {
 });
 
 
-const handleGoogleLogin = createAsyncThunk('auth/handleGoogleLogin', async () => {
+export const handleGoogleLogin = createAsyncThunk('auth/handleGoogleLogin', async () => {
     const url = `${BASE_URL}/auth/login?role=user`;
     const { data } = await axios.get(url);
     if (data) {
@@ -40,7 +41,7 @@ const handleGoogleLogin = createAsyncThunk('auth/handleGoogleLogin', async () =>
     }
 });
 
-const handleLogout = createAsyncThunk(
+export const handleLogout = createAsyncThunk(
     'auth/handleLogout',
     async (_, { rejectWithValue }) => {
         try {
@@ -52,12 +53,37 @@ const handleLogout = createAsyncThunk(
             }
             return rejectWithValue('Logout failed');
         } catch (error) {
-            console.log('error', error);
             return rejectWithValue('Failed to logout');
         }
     }
 );
+export interface updateUserProps {
+    userId: string;
+    metadata?: Metadata;
+    socialMedia?: SocialMedia;
+}
 
+export const updateProfile = createAsyncThunk(
+    'auth/updateProfile',
+    async ({ userId, metadata, socialMedia }: updateUserProps, { rejectWithValue }) => {
+        try {
+            console.log('userId', userId);
+            console.log('metadata', metadata);
+            console.log('socialMedia', socialMedia);
+            const response = await axios.put(
+                `${BASE_API_URL}/user/update/${userId}`,
+                { metadata, socialMedia },
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.data?.message) {
+                return rejectWithValue(error.response.data.message);
+            }
+            return rejectWithValue('Error updating profile');
+        }
+    }
+);
 
 
 
@@ -134,8 +160,23 @@ const authSlice = createSlice({
             state.isInitialized = true;
         });
 
+        builder
+            .addCase(updateProfile.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateProfile.fulfilled, (state, action: PayloadAction<IUserProps>) => {
+                state.loading = false;
+                state.user = action.payload;
+                state.error = null;
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+
     }
 });
 export const { setUser, setLoading, setError, logout, clearError } = authSlice.actions;
 
-export { authSlice, handleGoogleLogin, handleLogout, verifyAuth };
+export const authReducer = authSlice.reducer;

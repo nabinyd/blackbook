@@ -9,15 +9,13 @@ import PartnersAndCollaboration from "@/shared/components/PartnersAndCollaborati
 export default function Home() {
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
       <HomePage />
-      {/* Latest Projects Section */}
       <LatestProject />
       <ShareProjectBanner />
       <Testimonials />
       <FAQ />
       <CTA />
-      <PartnersAndCollaboration />
+      {/* <PartnersAndCollaboration /> */}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { setUser } from '@/lib/features/auth.slice';
 import { Routes } from '@/config/Routes';
 import { BASE_URL } from '@/constant/constant';
 import axios from 'axios';
+import Loading from '@/app/Loading';
 
 export default function AuthSuccess() {
     const router = useRouter();
@@ -20,7 +21,6 @@ export default function AuthSuccess() {
 
                 if (response.status === 200) {
                     const userData = await response.data;
-                    console.log('User data:', userData);
                     dispatch(setUser(userData));
                     router.push(Routes.DASHBOARD);
                 } else {
@@ -39,5 +39,9 @@ export default function AuthSuccess() {
     }, [dispatch, router]);
 
 
-    return <div>Completing authentication...</div>;
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <Loading />
+        </div>
+    )
 }

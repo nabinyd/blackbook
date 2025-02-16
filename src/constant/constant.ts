@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ;
 const BASE_API_URL= `${BASE_URL}/api/v1`;
 const GOOGLE_LOGIN = `${BASE_URL}/auth/google`;
 const GOOGLE_LOGOUT = `${BASE_URL}/auth/logout`;

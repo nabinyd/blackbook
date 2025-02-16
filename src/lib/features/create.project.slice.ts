@@ -10,13 +10,11 @@ export const createProject = createAsyncThunk<
     { rejectValue: string }>("createProject/createProject",
         async (formData, { rejectWithValue }) => {
             try {
-                console.log("FormData being sent", formData);
                 const response = await axios.post(`${BASE_URL}/api/v1/project/create`, formData, {
                     headers: {
-                        "Content-Type": "multipart/form-data", // Ensure proper handling of FormData
+                        "Content-Type": "multipart/form-data", 
                     },
                 });
-                console.log(response.status, response.data);
                 return response.data as IProjectCardProps;
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {

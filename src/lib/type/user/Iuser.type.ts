@@ -24,7 +24,7 @@ export interface ISocialMedia {
 }
 
 export interface IMetadata {
-    favouriteProjects?: string[]; // Assuming project IDs will be converted to strings
+    favouriteProjects?: string[]; 
     bio?: string;
     gender?: string;
     profilePicUrl: string;
@@ -33,7 +33,7 @@ export interface IMetadata {
     degree?: string;
     stream?: string;
     address?: IAddress;
-    followers?: string[]; // Assuming follower IDs will be converted to strings
+    followers?: string[];
 }
 
 export interface IAddress {

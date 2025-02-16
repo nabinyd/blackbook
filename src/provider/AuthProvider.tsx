@@ -26,11 +26,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             if (isPrivateRoute) {
                 
                 if (!isAuthenticated) {
-                    router.push(Routes.PROJECT); 
-                }
-            } else {
-                if (isAuthenticated) {
-                    router.push(Routes.DASHBOARD);
+                    router.push(Routes.HOME); 
                 }
             }
         }

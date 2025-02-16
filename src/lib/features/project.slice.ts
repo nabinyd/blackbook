@@ -22,6 +22,12 @@ interface ProjectState {
     userProjects: IProjectCardProps[];
     userProjectsLoading: boolean;
     userProjectsError: string | null;
+    userFavoriteProjects: IProjectCardProps[];
+    userFavoriteProjectsLoading: boolean;
+    userFavoriteProjectsError: string | null;
+    isFavourite: boolean;
+    favoriteCheckLoading: boolean;
+    favoriteCheckError: string | null;
 }
 
 
@@ -42,6 +48,12 @@ const initialState: ProjectState = {
     userProjects: [],
     userProjectsLoading: false,
     userProjectsError: null,
+    userFavoriteProjects: [],
+    userFavoriteProjectsLoading: false,
+    userFavoriteProjectsError: null,
+    isFavourite: false,
+    favoriteCheckLoading: false,
+    favoriteCheckError: null,
 };
 
 
@@ -135,7 +147,7 @@ export const fetchUserProjects = createAsyncThunk<IProjectCardProps[], string, {
     "project/fetchUserProjects",
     async (userId, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${BASE_URL}/api/v1/project/user/${userId}`,{
+            const response = await axios.get(`${BASE_URL}/api/v1/project/user/${userId}`, {
                 withCredentials: true
             });
             return response.data as IProjectCardProps[];
@@ -148,12 +160,96 @@ export const fetchUserProjects = createAsyncThunk<IProjectCardProps[], string, {
     }
 );
 
+export const fetchUserFavoriteProjects = createAsyncThunk<IProjectCardProps[], string, { rejectValue: string }>(
+    "project/fetchUserFavoriteProjects",
+    async (userId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/api/v1/project/favorites/${userId}`, {
+                withCredentials: true
+            });
+            return response.data as IProjectCardProps[];
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                return rejectWithValue(error.response.data.message || "Failed to fetch user favorite projects");
+            }
+            return rejectWithValue("An unknown error occurred while fetching user favorite projects");
+        }
+    }
+);
+
+export const toggleFavouriteProject = createAsyncThunk<
+    IProjectCardProps[],
+    { projectId: string; userId: string },
+    { rejectValue: string }
+>("project/toggleFavouriteProject", async ({ projectId, userId }, { rejectWithValue }) => {
+    try {
+        const response = await axios.patch(`${BASE_URL}/api/v1/project/add-to-favorites`, {
+            projectId,
+            userId,
+        });
+        return response.data as IProjectCardProps[];
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data.message || "Failed to toggle favourite project");
+        }
+        return rejectWithValue("An unknown error occurred while toggling favourite project");
+    }
+});
+
+interface CheckFavoriteParams {
+    projectId: string;
+    userId: string;
+}
+
+
+
+export const checkFavouriteProject = createAsyncThunk<
+    boolean,
+    CheckFavoriteParams,
+    { rejectValue: string }
+>("project/checkFavouriteProject",
+    async ({ projectId, userId }, { rejectWithValue }) => {
+        if (!projectId || !userId) {
+            return rejectWithValue("Project ID and User ID are required");
+        }
+
+        try {
+            const response = await axios.get<boolean>(
+                `${BASE_URL}/api/v1/project/favorites/${userId}/${projectId}`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    return false;
+                }
+                return rejectWithValue(
+                    error.response?.data?.message ||
+                    "Failed to check favourite status"
+                );
+            }
+            return rejectWithValue("An unexpected error occurred while checking favourite status");
+        }
+    }
+);
 
 
 const projectSlice = createSlice({
     name: "project",
     initialState,
-    reducers: {},
+    reducers: {
+        resetFavoriteState: (state) => {
+            state.isFavourite = false;
+            state.favoriteCheckLoading = false;
+            state.favoriteCheckError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
 
@@ -301,7 +397,47 @@ const projectSlice = createSlice({
                 state.userProjectsLoading = false;
                 state.userProjectsError = action.payload || "Failed to fetch user projects";
             });
+        builder.addCase(toggleFavouriteProject.pending, (state) => {
+            state.userFavoriteProjectsError = null;
+            state.userFavoriteProjectsLoading = true;
+        })
+            .addCase(toggleFavouriteProject.fulfilled, (state, action) => {
+                state.userFavoriteProjectsLoading = false;
+                state.userFavoriteProjects = action.payload;
+            })
+            .addCase(toggleFavouriteProject.rejected, (state, action) => {
+                state.userFavoriteProjectsError = action.payload || "Failed to toggle favourite project";
+                state.userFavoriteProjectsLoading = false;
+
+            });
+        builder.addCase(fetchUserFavoriteProjects.pending, (state) => {
+            state.userFavoriteProjectsLoading = true;
+            state.userFavoriteProjectsError = null;
+        })
+            .addCase(fetchUserFavoriteProjects.fulfilled, (state, action) => {
+                state.userFavoriteProjectsLoading = false;
+                state.userFavoriteProjects = action.payload;
+            })
+            .addCase(fetchUserFavoriteProjects.rejected, (state, action) => {
+                state.userFavoriteProjectsLoading = false;
+                state.userFavoriteProjectsError = action.payload || "Failed to fetch user favorite projects";
+            });
+
+        builder
+            .addCase(checkFavouriteProject.pending, (state) => {
+                state.favoriteCheckLoading = true;
+                state.favoriteCheckError = null;
+            })
+            .addCase(checkFavouriteProject.fulfilled, (state, action) => {
+                state.favoriteCheckLoading = false;
+                state.isFavourite = action.payload;
+            })
+            .addCase(checkFavouriteProject.rejected, (state, action) => {
+                state.favoriteCheckLoading = false;
+                state.favoriteCheckError = action.payload || "Failed to check favourite status";
+            });
+
     },
 });
-
+export const { resetFavoriteState } = projectSlice.actions;
 export const projectReducer = projectSlice.reducer;
