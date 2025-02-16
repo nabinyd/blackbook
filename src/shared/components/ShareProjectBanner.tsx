@@ -19,9 +19,12 @@ export default function ShareProjectBanner() {
                             Create Project
                         </Button>
                     </Link>
-                    <Button className="bg-transparent border font-semibold py-6 px-8 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">
-                        Learn More
-                    </Button>
+
+                    <Link href={Routes.PROJECT}>
+                        <Button className="bg-white text-blue-600 font-semibold py-6 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300">
+                            Learn More
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </div>

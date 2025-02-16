@@ -6,6 +6,7 @@ export const Routes = {
     LOGOUT: '/',
     DASHBOARD: '/user/dashboard',
     PROFILE: '/profile',
+    UPDATE_PROFILE: '/user/update',
     SETTINGS: '/settings',
 
     // General Routes

@@ -118,7 +118,7 @@ export default function ProjectCard(props: IProjectCardProps) {
                             className="h-8 bg-green-50 text-green-600 hover:bg-green-100 px-2"
                         >
                             <ArrowUpCircle className="w-4 h-4 mr-1" />
-                            {props.upVotes}
+                            {props.upVotes ?? 0}
                         </Button>
                         <Button
                             onClick={() => handleVote(props.id, false)}
@@ -126,7 +126,7 @@ export default function ProjectCard(props: IProjectCardProps) {
                             className="h-8 bg-red-50 text-red-600 hover:bg-red-100 px-2"
                         >
                             <ArrowDownCircle className="w-4 h-4 mr-1" />
-                            {props.downVotes}
+                            {props.downVotes ?? 0}
                         </Button>
                         <div className="flex items-center text-gray-500 text-xs">
                             <Eye className="w-3 h-3 mr-1" />

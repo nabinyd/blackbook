@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, Star, Users, Lightbulb, BookOpen, Link as LinkIcon } from "lucide-react";
+import Link from "next/link";
+import { Routes } from "@/config/Routes";
 
 export default function AboutPage() {
     return (
@@ -60,11 +62,11 @@ export default function AboutPage() {
                                 title: "Inspire Learning",
                                 description: "Inspiring, motivating, and elevating the standards of project-based learning."
                             },
-                            {
-                                icon: <LinkIcon className="w-6 h-6" />,
-                                title: "Bridge Gaps",
-                                description: "Bridging the gap between academia and industry."
-                            },
+                            // {
+                            //     icon: <LinkIcon className="w-6 h-6" />,
+                            //     title: "Bridge Gaps",
+                            //     description: "Bridging the gap between academia and industry."
+                            // },
                             {
                                 icon: <Users className="w-6 h-6" />,
                                 title: "Connect Talent",
@@ -95,10 +97,12 @@ export default function AboutPage() {
                         Be part of a growing community of innovators, creators, and problem solvers.
                         Share your projects and discover inspiring work from others.
                     </p>
-                    <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 mx-auto">
-                        Get Started
-                        <ArrowRight className="w-5 h-5" />
-                    </button>
+                    <Link href={Routes.LOGIN}>
+                        <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 mx-auto">
+                            Get Started
+                            <ArrowRight className="w-5 h-5" />
+                        </button>
+                    </Link>
                 </section>
             </div>
         </div>

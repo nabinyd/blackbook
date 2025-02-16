@@ -7,13 +7,14 @@ import { Routes } from "@/config/Routes";
 import Image from "next/image";
 import Loading from "@/app/Loading";
 import ProjectCard from "@/app/(feature)/project/_component/ProjectCard";
-import { fetchUserProjects } from "@/lib/features/project.slice";
+import { fetchUserFavoriteProjects, fetchUserProjects } from "@/lib/features/project.slice";
+import Link from "next/link";
 
 export default function Dashboard() {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const { userProjects, userProjectsLoading } = useSelector((state: RootState) => state.project);
+    const { userProjects, userProjectsLoading, userFavoriteProjects, userFavoriteProjectsLoading } = useSelector((state: RootState) => state.project);
     useEffect(() => {
         if (!isAuthenticated) {
             router.push(Routes.LOGIN);
@@ -23,13 +24,9 @@ export default function Dashboard() {
     useEffect(() => {
         if (isAuthenticated) {
             dispatch(fetchUserProjects(user?.id as unknown as string));
+            dispatch(fetchUserFavoriteProjects(user?.id as unknown as string));
         }
     }, [isAuthenticated, user, dispatch]);
-
-    const handleEditProfile = () => {
-        console.log('Edit Profile');
-        // TODO: Implement edit profile logic here
-    };
 
     const handleDeleteProfile = () => {
         if (confirm("Are you sure you want to delete your profile?")) {
@@ -38,7 +35,7 @@ export default function Dashboard() {
         }
     };
 
-    if (userProjectsLoading) {
+    if (userProjectsLoading || userFavoriteProjectsLoading) {
         return <Loading />;
     }
 
@@ -65,12 +62,10 @@ export default function Dashboard() {
 
                 {/* Edit & Delete Profile Buttons */}
                 <div className="flex justify-between p-6 border-b border-gray-200">
-                    <button
-                        onClick={handleEditProfile}
-                        className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                    >
+                    <Link href={Routes.UPDATE_PROFILE}>
+                       
                         Edit Profile
-                    </button>
+                    </Link>
                     <button
                         onClick={handleDeleteProfile}
                         className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
@@ -148,16 +143,12 @@ export default function Dashboard() {
 
                 {/* Favourite Projects Section */}
                 <div className="p-6">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Favourite Projects</h2>
-                    {(user?.metadata.favouriteProjects ?? []).length > 0 ? (
-                        <ul className="list-disc list-inside text-gray-800">
-                            {user?.metadata.favouriteProjects?.map((project, index) => (
-                                <li key={index}>{project}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p className="text-sm text-gray-600">No favourite projects added.</p>
-                    )}
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Your Favorite Projects</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {userFavoriteProjects && userFavoriteProjects.map((project) => (
+                            <ProjectCard key={project.id} {...project} />
+                        ))}
+                    </div>
                 </div>
 
                 {/* User Projects Section */}
@@ -169,6 +160,9 @@ export default function Dashboard() {
                         ))}
                     </div>
                 </div>
+
+                {/* User Favorite Projects Section */}
+
             </div>
         </div>
     );

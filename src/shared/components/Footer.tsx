@@ -78,7 +78,7 @@ export default function Footer() {
                             Stay updated with the latest news, updates, and project showcases.
                             Subscribe to our newsletter today!
                         </p>
-                        <form className="flex">
+                        <div className="flex">
                             <input
                                 type="email"
                                 placeholder="Enter your email"
@@ -87,14 +87,14 @@ export default function Footer() {
                             <button className="bg-yellow-500 text-white px-6 py-2 rounded-r-lg hover:bg-yellow-600 transition-all duration-300">
                                 Subscribe
                             </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
                 {/* Footer Bottom Section */}
                 <div className="mt-12 text-center text-lg text-gray-400">
                     <p>© 2025 Blackbook. All Rights Reserved.</p>
-                    <p>Terms of Service | Privacy Policy</p>
+                    {/* <p>Terms of Service | Privacy Policy</p>
                     <p>
                         Designed by{" "}
                         <Link
@@ -104,7 +104,7 @@ export default function Footer() {
                         >
                             Nabin Yadav
                         </Link>
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </div>

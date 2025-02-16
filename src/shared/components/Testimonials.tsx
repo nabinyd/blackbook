@@ -1,30 +1,24 @@
+'use client';
+import Loading from "@/app/Loading";
+import { fetchTestimonial } from "@/lib/features/testimonial";
+import { AppDispatch, RootState } from "@/lib/store";
 import Image from "next/image";
-import React from "react";
+import  {  useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Testimonials() {
-    const testimonials = [
-        {
-            name: "John Doe",
-            position: "Student",
-            message:
-                "Blackbook Management System has been a game-changer for submitting and managing my final year projects. It&quots easy to use and has made everything so much smoother. Highly recommend!",
-            image: "https://randomuser.me/api/portraits/men/1.jpg", // Placeholder image
-        },
-        {
-            name: "Jane Smith",
-            position: "Faculty Member",
-            message:
-                "As a faculty member, the platform has made project feedback more efficient. It allows me to track student progress and offer timely suggestions.",
-            image: "https://randomuser.me/api/portraits/women/2.jpg", // Placeholder image
-        },
-        {
-            name: "Mark Wilson",
-            position: "Student",
-            message:
-                "The real-time tracking feature is amazing. I can easily see where my project stands, and the feedback system is incredibly helpful!",
-            image: "https://randomuser.me/api/portraits/men/3.jpg", // Placeholder image
-        },
-    ];
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { testimonials, loading } = useSelector((state: RootState) => state.testimonialReducer);
+
+    useEffect(() => {
+        dispatch(fetchTestimonial());
+    }, [dispatch]);
+
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <div className="bg-gray-50 py-20">
@@ -52,7 +46,7 @@ export default function Testimonials() {
                                     <h3 className="text-xl font-semibold text-gray-800">
                                         {testimonial.name}
                                     </h3>
-                                    <p className="text-gray-600">{testimonial.position}</p>
+                                    <p className="text-gray-600">{testimonial.designation}</p>
                                 </div>
                             </div>
                             <p className="text-lg text-gray-700 italic">&quot {testimonial.message} &quot</p>

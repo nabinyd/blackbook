@@ -68,3 +68,10 @@
     @apply bg-background text-foreground ;
   }
 }
+
+
+.tiptap {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

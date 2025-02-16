@@ -13,13 +13,13 @@ export default function FAQ() {
         {
             question: "How do I create a project?",
             answer:
-                "To create a project, click on the 'Create Project' button on the homepage, fill in the necessary details about your project, and submit. You can modify your project details anytime.",
+                "To create a project, click on the 'Create Project' button on the homepage, fill in the necessary details about your project, and submit. ",
         },
-        {
-            question: "Can I edit my project after submission?",
-            answer:
-                "Yes! You can edit your project details at any time. Just visit your project dashboard, and make the required changes.",
-        },
+        // {
+        //     question: "Can I edit my project after submission?",
+        //     answer:
+        //         "Yes! You can edit your project details at any time. Just visit your project dashboard, and make the required changes.",
+        // },
         {
             question: "How can I track my project status?",
             answer:
@@ -28,7 +28,7 @@ export default function FAQ() {
         {
             question: "What if I need help with my project?",
             answer:
-                "If you need assistance, feel free to contact our support team. You can reach us through the 'Contact Us' page or directly email us at support@blackbook.com.",
+                "If you need assistance, feel free to contact our support team. You can reach us through the 'Contact Us' page or directly email us at blackbook.project.official@gmail.com",
         },
     ];
 

@@ -10,7 +10,7 @@ export default function HomePage() {
                 <h1 className="font-extrabold text-4xl md:text-5xl text-gray-800 leading-tight">
                     Welcome to{" "}
                     <span className="text-indigo-600">Blackbook</span> -
-                    <span className="underline decoration-dotted decoration-indigo-400 underline-offset-4">
+                    <span className="">
                         {" "}
                         Your ultimate project showcase
                     </span>
